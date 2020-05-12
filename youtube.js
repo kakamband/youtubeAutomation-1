@@ -1,11 +1,16 @@
 let cheerio = require("cheerio")
 let puppeteer = require("puppeteer");
+let fs = require("fs")
+let cFile = process.argv[2];
 
 
 
 (async function () {
-    try {
 
+    try {
+      let data = await fs.promises.readFile(cFile);
+      let { pwd, user } = JSON.parse(data);
+ 
         let browser = await puppeteer.launch({
             headless: false,
             defaultViewport: null,
@@ -22,11 +27,11 @@ let puppeteer = require("puppeteer");
         await page.click(".gb_le.gb_4.gb_5c");
         await page.waitForSelector("input[type='email']");
         await page.click("input[type='email']");
-        await page.type("input[type='email']", "practiceprojecat@gmail.com", { delay: 50 })
+        await page.type("input[type='email']", user , { delay: 50 })
         await page.click("#identifierNext");
         await page.waitForNavigation({ waitUntil: "networkidle0" });
         await page.waitForSelector("input[type='password']");
-        await page.type("input[type='password']", "Bestfriend@29", { delay: 50 });
+        await page.type("input[type='password']", pwd, { delay: 50 });
         await page.click("#passwordNext");
         await page.waitForNavigation({ waitUntil: "networkidle0" });
 
@@ -113,4 +118,4 @@ async function handleVideos(tab, link) {
     await tab.click("div#menu-container div ytd-menu-renderer div ytd-toggle-button-renderer a.yt-simple-endpoint.style-scope.ytd-toggle-button-renderer yt-icon-button button.style-scope.yt-icon-button");
     await tab.close()
 }
-//     node youtube.js
+//*************************  node youtube.js "credentials.json"         */     
